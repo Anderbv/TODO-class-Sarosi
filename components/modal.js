@@ -12,7 +12,7 @@ export default class Modal {
     this.description = document.getElementById('modal-description')
     this.btn = document.getElementById('modal-btn') 
     this.completed = document.getElementById('modal-completed');
-    this.alert = new Alert();
+    this.alert = new Alert('#modal-alert');
     this.todo = null;
   }
 

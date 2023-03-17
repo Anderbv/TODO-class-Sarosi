@@ -4,8 +4,8 @@ export default class Model {
   currentId;
   constructor() {
     this.view = null;
-    this.todos = JSON.parse(localStorage.getItem('todos'));
-    if( this.todos.length < 1 ) {
+    this.todos = JSON.parse(localStorage.getItem('todos')) ;
+    if( !this.todos || this.todos.length < 1 ) {
       this.todos = [{
         id: 0,
         title: 'Learn Js',

@@ -1,4 +1,5 @@
 import AddTodo from "./components/addTodo.js";
+import Filters from "./components/filters.js";
 import Modal from "./components/modal.js";
 
 export default class View {
@@ -13,6 +14,8 @@ export default class View {
     this.modal = new Modal();
     this.addTodoForm.onClick( ( title, description ) => this.addTodo( title, description ) )
     this.modal.onClick( ( id, values ) => this.editTodo( id, values ) )
+    this.filters = new Filters();
+    this.filters.onClick( ( filters ) => this.filter(filters) )
   }
 
   render() {
@@ -22,6 +25,40 @@ export default class View {
 
   setModel( model ) {
     this.model = model;
+  }
+
+  filter( filters ) {
+    // * recupero el button y el word que el usuario modifico en 
+    // * el formularios de filtros
+    const { type, words } = filters;
+    const [ , ...rows] = this.table.getElementsByTagName('tr');
+
+    for ( const row of rows ) {
+
+      
+      const [ title, description, completed ] = row.children
+      let esconderFila = false;
+
+      // * evaluar por letra encontrada
+      if(words) esconderFila = !title.innerText.includes(words) && !description.innerText.includes(words)
+
+      // * evaluar por completed, uncompleted, all
+      const debeCompletarse = type === 'completed';
+      const isCompleted = completed.children[0].checked;
+      if(type !== 'all' && debeCompletarse !== isCompleted) {
+        // * si el usuario escoge los completados y el todo no lo esta, entonces lo escondo
+        esconderFila = true;
+      }
+
+      // * agregar u eliminar el oculto
+      if(esconderFila) {
+        row.classList.add('d-none')
+      } else {
+        row.classList.remove('d-none') 
+      }
+      
+    }
+
   }
 
   addTodo( title, description ) {
